@@ -1,0 +1,14 @@
+[tool.poetry]
+name = "AOC Day 1"
+version = "0.1.0"
+description = ""
+authors = ["D3h4n <75465982+D3h4n@users.noreply.github.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+pytest = "^7.2.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
