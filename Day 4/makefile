@@ -10,11 +10,14 @@ OBJS = $(patsubst $(SRC)%.c,$(BIN)%.o,$(SRC_FILES))
 
 all: $(BIN)day4
 
-clean:
-	rm -f $(BIN)day4 $(BIN)*.o
-
 $(BIN)day4: $(OBJS)
 	$(CC) $(CFLAGS) -o $@ $^ 
 
-$(BIN)%.o: $(SRC)%.c
+$(BIN)%.o: $(SRC)%.c | $(BIN)
 	$(CC) $(CFLAGS) -I$(INC) -c -o $@ $^
+
+$(BIN):
+	@mkdir -p $@
+
+clean:
+	rm -rf $(BIN)
