@@ -21,35 +21,35 @@ var _ = Describe("A Crate Parser should be able to", func() {
 		},
 		Entry("with one crate", "[A]", []byte{'A'}),
 		Entry("with three crates", "[A] [B] [C]", []byte{'A', 'B', 'C'}),
-		Entry("with missing crates (example 1)", "    [B]", []byte{0, 'B'}),
-		Entry("with missing crates (example 2)", "[A]     [C]", []byte{'A', 0, 'C'}),
-		Entry("with missing crates (example 3)", "[A] [B]    ", []byte{'A', 'B', 0}),
+		Entry("with missing crates (example 1)", "    [B]", []byte{' ', 'B'}),
+		Entry("with missing crates (example 2)", "[A]     [C]", []byte{'A', ' ', 'C'}),
+		Entry("with missing crates (example 3)", "[A] [B]    ", []byte{'A', 'B', ' '}),
 	)
 
 	DescribeTable("parse several rows of crates and end at row of numbers",
-		func(input string, expectedResult [][]byte, expectedNumStacks int) {
+		func(input string, expectedResult [][]byte) {
 			// Arrange
 			crateParser := parser.NewCrateParser()
 
 			// Act
-			result, numStacks := crateParser.ParseCrates(input)
+			result := crateParser.ParseCrates(input)
 
 			// Assert
 			Expect(result).To(Equal(expectedResult))
-			Expect(numStacks).To(Equal(expectedNumStacks))
 		},
-		Entry("with 1 row and stack", "[A]\n 1 ",
-			[][]byte{{'A'}}, 1,
+		Entry("with 1 row and stack",
+			"[A]\n 1 ",
+			[][]byte{{'A'}},
 		),
-		Entry("with 1 rows and stacks", "[A] [B]\n[C] [D]\n 1   2 ",
-			[][]byte{{'A', 'B'}, {'C', 'D'}}, 2,
+		Entry("with 1 rows and stacks",
+			"[A] [B]\n[C] [D]\n 1   2 ",
+			[][]byte{{'A', 'B'}, {'C', 'D'}},
 		),
 		Entry("with 4 rows and 3 stacks",
 			"[A]     [B]\n    [C] [D]\n[E] [F]    \n[G] [H] [I]\n 1   2   3 ",
 			[][]byte{
-				{'A', 0, 'B'}, {0, 'C', 'D'}, {'E', 'F', 0}, {'G', 'H', 'I'},
+				{'A', ' ', 'B'}, {' ', 'C', 'D'}, {'E', 'F', ' '}, {'G', 'H', 'I'},
 			},
-			3,
 		),
 	)
 })

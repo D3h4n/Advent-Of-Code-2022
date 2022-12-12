@@ -18,13 +18,13 @@ func main() {
 	}
 
 	input, _ := readInput(inputFile)
-	crates, numStacks := crateParser.ParseCrates(input)
+	crates := crateParser.ParseCrates(input)
 	commands := commandParser.ParseCommands(input)
 
 	// ___________
 	//   PART 1
 	// ___________
-	stacks := initialiseStacks(crates, numStacks)
+	stacks := initialiseStacks(crates)
 	performCommands(commands, stacks, false)
 
 	result := ""
@@ -36,7 +36,7 @@ func main() {
 	// ___________
 	//   PART 2
 	// ___________
-	stacks = initialiseStacks(crates, numStacks)
+	stacks = initialiseStacks(crates)
 	performCommands(commands, stacks, true)
 
 	result = ""
@@ -56,13 +56,13 @@ func readInput(file string) (string, error) {
 
 // initialiseStacks creates and initialises the set of stacks as defined
 // in the input file.
-func initialiseStacks(crates [][]byte, numStacks int) []stack.Stack {
-	stacks := make([]stack.Stack, numStacks)
+func initialiseStacks(crates [][]byte) []stack.Stack {
+	stacks := make([]stack.Stack, len(crates[0]))
 
 	for i := range crates {
-		for i, crate := range crates[len(crates)-i-1] {
-			if crate != 0 {
-				stacks[i].Push(crate)
+		for j, crate := range crates[len(crates)-i-1] {
+			if crate != ' ' {
+				stacks[j].Push(crate)
 			}
 		}
 	}
