@@ -1,45 +1,48 @@
+// Package stack provides a basic Stack implementation.
 package stack
 
+// Stack stores items in a First-In-Last-Out order.
 type Stack struct {
-	data []interface{}
-	tail int
-	size int
+	data    []interface{}
+	size    int
+	maxSize int
 }
 
+// NewStack creates a new Stack.
 func NewStack() *Stack {
 	return &Stack{}
 }
 
+// Push a new item to the stack.
 func (this *Stack) Push(value interface{}) {
-	if this.tail == this.size {
+	if this.size == this.maxSize {
 		this.data = append(this.data, value)
-		this.size++
+		this.maxSize++
 	} else {
-		this.data[this.tail] = value
+		this.data[this.size] = value
 	}
 
-	this.tail++
+	this.size++
 }
 
+// PushN items to the stack.
 func (this *Stack) PushN(items []interface{}) {
 	for _, item := range items {
 		this.Push(item)
 	}
 }
 
-func (this *Stack) Size() int {
-	return this.tail
-}
-
+// Pop an item from the stack.
 func (this *Stack) Pop() interface{} {
-	if this.tail == 0 {
+	if this.size == 0 {
 		return nil
 	}
 
-	this.tail--
-	return this.data[this.tail]
+	this.size--
+	return this.data[this.size]
 }
 
+// PopN items from the stack.
 func (this *Stack) PopN(n int) []interface{} {
 	items := []interface{}{}
 
@@ -48,4 +51,9 @@ func (this *Stack) PopN(n int) []interface{} {
 	}
 
 	return items
+}
+
+// Size of the stack
+func (this *Stack) Size() int {
+	return this.size
 }

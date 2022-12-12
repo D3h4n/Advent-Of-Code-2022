@@ -5,18 +5,26 @@ import (
 	"strings"
 )
 
+// Command represents a move command.
 type Command struct {
+	// Amount of crates to move.
 	Amount int
-	From   int
-	To     int
+	// From represents the source stack.
+	From int
+	// To represents the target stack.
+	To int
 }
 
+// CommandParser is reponsible for parsing the list of move commands.
 type CommandParser struct{}
 
+// NewCommandParser creates a CommandParser, which is reponsible for parsing
+// the list of move commands.
 func NewCommandParser() *CommandParser {
 	return &CommandParser{}
 }
 
+// ParseCommands from an input string, skipping the crate definitions.
 func (this *CommandParser) ParseCommands(input string) []Command {
 	commands := []Command{}
 

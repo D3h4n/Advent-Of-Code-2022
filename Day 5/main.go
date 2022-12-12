@@ -12,7 +12,6 @@ func main() {
 	crateParser := parser.NewCrateParser()
 	commandParser := parser.NewCommandParser()
 	inputFile := "puzzle_input.txt"
-	isPart2 := false
 
 	if len(os.Args) > 1 {
 		inputFile = os.Args[1]
@@ -22,23 +21,41 @@ func main() {
 	crates, numStacks := crateParser.ParseCrates(input)
 	commands := commandParser.ParseCommands(input)
 
+	// ___________
+	//   PART 1
+	// ___________
 	stacks := initialiseStacks(crates, numStacks)
-	performCommands(commands, stacks, isPart2)
+	performCommands(commands, stacks, false)
 
-	fmt.Printf("stacks: %v\n", stacks)
-
+	result := ""
 	for _, stack := range stacks {
-		fmt.Printf("%c", stack.Pop())
+		result += fmt.Sprintf("%c", stack.Pop())
 	}
-	println()
+	fmt.Printf("Part 1: %s\n", result)
+
+	// ___________
+	//   PART 2
+	// ___________
+	stacks = initialiseStacks(crates, numStacks)
+	performCommands(commands, stacks, true)
+
+	result = ""
+	for _, stack := range stacks {
+		result += fmt.Sprintf("%c", stack.Pop())
+	}
+	fmt.Printf("Part 2: %s\n", result)
 }
 
-func readInput(filename string) (string, error) {
-	f, _ := os.Open(filename)
+// readInput takes the name/path of a file and reads its entire content
+// as a string.
+func readInput(file string) (string, error) {
+	f, _ := os.Open(file)
 	reader := bufio.NewReader(f)
 	return reader.ReadString(0)
 }
 
+// initialiseStacks creates and initialises the set of stacks as defined
+// in the input file.
 func initialiseStacks(crates [][]byte, numStacks int) []stack.Stack {
 	stacks := make([]stack.Stack, numStacks)
 
@@ -53,6 +70,9 @@ func initialiseStacks(crates [][]byte, numStacks int) []stack.Stack {
 	return stacks
 }
 
+// performCommands iterates through a set of commands in order and modifies
+// the set of stacks accordingly. It also accepts a boolean that toggles
+// between output for part 1 and part 2 of day 5.
 func performCommands(commands []parser.Command, stacks []stack.Stack, isPart2 bool) {
 	for _, command := range commands {
 		crates := stacks[command.From-1].PopN(command.Amount)
