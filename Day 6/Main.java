@@ -1,9 +1,5 @@
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.Scanner;
-
-import java.util.HashSet;
-import java.util.Arrays;
+import java.io.*;
+import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
@@ -31,7 +27,6 @@ public class Main {
         }
 
         scanner.close();
-
         return input.toString();
     }
 
@@ -43,7 +38,7 @@ public class Main {
 
         for (int i = 0; i < input.length() - length; i++) {
             String[] chars = input.substring(i, i + length).split("");
-            set.addAll(Arrays.asList(chars));
+            Collections.addAll(set, chars);
             
             if (set.size() == length)
                 return i + length;
