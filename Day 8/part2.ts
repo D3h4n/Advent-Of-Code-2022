@@ -1,10 +1,10 @@
 async function main() {
   const text = await Deno.readTextFile("puzzle_input.txt");
   const trees = text
+    .trim()
     .split("\n")
     .map((line) => line.split(""))
-    .map((row) => row.map(Number))
-    .slice(0, -1);
+    .map((row) => row.map(Number));
   const max = findMaxScenicScore(trees);
   console.log(max);
 }
